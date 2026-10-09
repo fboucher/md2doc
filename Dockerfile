@@ -2,13 +2,20 @@
 # pandoc + LaTeX toolchain is available inside the container.
 FROM pandoc/latex:3.11
 
+# Trust local CA certificates when building behind a TLS-inspection proxy.
+COPY certs/ /usr/local/share/ca-certificates/
+RUN for f in /usr/local/share/ca-certificates/*.crt; do \
+        [ -e "$f" ] && cat "$f" >> /etc/ssl/certs/ca-certificates.crt; \
+    done
+
 # Python runtime for the FastAPI web layer.
 RUN apk add --no-cache python3 py3-pip \
     && python3 -m venv /opt/venv
 
 ENV PATH="/opt/venv/bin:$PATH" \
     PYTHONUNBUFFERED=1 \
-    PIP_DISABLE_PIP_VERSION_CHECK=1
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PIP_CERT=/etc/ssl/certs/ca-certificates.crt
 
 WORKDIR /app
 
