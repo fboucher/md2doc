@@ -1,0 +1,13 @@
+services:
+  md2doc:
+    build:
+      context: .
+    image: md2doc:latest
+    container_name: md2doc
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    tmpfs:
+      - /tmp/md2doc:mode=1777
