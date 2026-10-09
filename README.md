@@ -72,13 +72,6 @@ images/
     └── images.md        # sample that references images/
 ```
 
-## Building behind a TLS proxy (Zscaler, etc.)
-
-`certs/` holds the corporate root CA certificates. The Dockerfile appends them to the
-container trust store at build time so that `apk` and `pip` can verify HTTPS. This is
-required on networks that intercept TLS (for example Zscaler) and harmless otherwise.
-Delete the files in `certs/` if you don't need them.
-
 ## Configuration
 
 Defaults live in `app/main.py`:
